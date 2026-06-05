@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ========================================================
+       SEO Meta Tags（預約表單頁）
+       【修改】替換假字為真實店家資訊
+       ======================================================== -->
+  <title>線上預約 | 美甲工作室 Nail Studio</title>
+  <meta name="description" content="快速填寫預約表單，選擇您喜愛的服務與時段，專業客服將於24小時內與您確認。" />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" href="images/favicon.ico" /><!-- 【修改】真實 favicon -->
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/booking.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ========================================================
+       BOOKING HEADER
+       ======================================================== -->
+  <header class="booking-header" id="booking-header">
+    <div class="container header-inner">
+
+      <!-- Logo（點擊觸發離開確認 Modal） -->
+      <a href="index.html" class="booking-header-logo" id="back-to-home">
+        <!-- 【修改】換成真實 Logo 圖片 -->
+        <div class="logo-mark">✦</div>
+        <span class="logo-text">美甲工作室</span><!-- 【修改】店名 -->
+      </a>
+
+      <!-- 右側 Tab 連結（目前先隱藏；功能確認後移除 hidden 並補上實際功能）
+           【修改】確認用途後移除 style="display:none" 並替換假字 -->
+      <div class="booking-header-tabs" style="display:none">
+        <button class="booking-header-tab active" data-tab-target="form">線上預約</button>
+        <button class="booking-header-tab" data-tab-target="query">預約查詢</button>
+        <button class="booking-header-tab" data-tab-target="availability">可預約時間</button>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ========================================================
+       TAB 切換列
+       ======================================================== -->
+  <div class="booking-tabs-bar">
+    <div class="container">
+      <div class="booking-tabs-inner">
+        <button class="booking-tab-btn active" data-tab="form">線上預約</button>
+        <button class="booking-tab-btn"        data-tab="query">預約查詢</button>
+        <button class="booking-tab-btn"        data-tab="availability">查看可預約時間</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================
+       TAB 1：預約表單
+       ======================================================== -->
+  <div class="tab-panel active" id="tab-form">
+    <div class="booking-page">
+      <div class="booking-form-section">
+        <div class="container">
+
+          <!-- 成功畫面（送出後顯示） -->
+          <div class="booking-success" id="booking-success">
+            <div class="success-card">
+              <div class="success-icon">
+                <i class="fa-regular fa-circle-check"></i>
+              </div>
+              <h2 class="success-title">預約申請已送出！</h2>
+              <p class="success-desc">
+                感謝您的預約，客服將於 24 小時內透過 LINE 與您確認。<br/>
+                以下為您的預約資料：
+              </p>
+              <!-- 成功資料由 JS 動態填入 -->
+              <div class="success-detail" id="success-detail"></div>
+              <a href="index.html" class="btn btn--primary">
+                <i class="fa-solid fa-house"></i> 返回首頁
+              </a>
+            </div>
+          </div>
+
+          <!-- 表單主體 -->
+          <div class="booking-layout" id="booking-form-layout">
+
+            <!-- 左欄：表單 -->
+            <div class="booking-form-wrap">
+              <h1 class="booking-form-title">線上預約</h1>
+              <p class="booking-form-subtitle">填寫以下資料，客服確認後預約即完成。標示 <span style="color:var(--color-primary)">*</span> 為必填欄位。</p>
+
+              <form id="booking-form" novalidate>
+
+                <!-- ── 基本資料 ── -->
+                <p class="form-section-title">基本資料</p>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="f-name">
+                      姓名 <span>*</span>
+                    </label>
+                    <input type="text" id="f-name" name="name"
+                           class="form-input" placeholder="您的姓名" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="f-phone">
+                      手機號碼 <span>*</span>
+                    </label>
+                    <input type="tel" id="f-phone" name="phone"
+                           class="form-input" placeholder="09XX-XXX-XXX" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="f-line">
+                    LINE 名稱 <span>*</span>
+                  </label>
+                  <input type="text" id="f-line" name="line_name"
+                         class="form-input" placeholder="您在 LINE 上的顯示名稱" required />
+                </div>
+
+
+                <!-- ── 服務選擇 ── -->
+                <p class="form-section-title">選擇服務項目</p>
+                <p style="font-size:0.83rem;color:var(--color-text-muted);margin-bottom:14px;">請點選您想要的服務（可單選）</p>
+
+                <!-- 服務選擇卡群組
+                     【修改】替換圖片、名稱、說明、價格、時間 -->
+                <div class="services-select-grid" id="services-select-grid">
+
+                  <div class="service-select-card" data-service="單色美甲" data-price="NT$500 起" data-duration="約 60 分">
+                    <i class="fa-solid fa-check check-badge"></i>
+                    <img class="service-select-img"
+                         src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=300&auto=format&fit=crop&q=70"
+                         alt="單色美甲" loading="lazy" />
+                    <div class="service-select-body">
+                      <p class="service-select-name">單色美甲</p>
+                      <p class="service-select-desc">經典純色，簡約百搭，百種色號任挑。</p>
+                      <div class="service-select-meta">
+                        <span class="s-price"><i class="fa-solid fa-tag"></i> NT$500 起</span>
+                        <span class="s-time"><i class="fa-regular fa-clock"></i> 約 60 分</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="service-select-card" data-service="漸層美甲" data-price="NT$700 起" data-duration="約 75 分">
+                    <i class="fa-solid fa-check check-badge"></i>
+                    <img class="service-select-img"
+                         src="https://images.unsplash.com/photo-1604902396830-aca29e19b067?w=300&auto=format&fit=crop&q=70"
+                         alt="漸層美甲" loading="lazy" />
+                    <div class="service-select-body">
+                      <p class="service-select-name">漸層美甲</p>
+                      <p class="service-select-desc">夢幻色彩漸變，多色搭配隨心所欲。</p>
+                      <div class="service-select-meta">
+                        <span class="s-price"><i class="fa-solid fa-tag"></i> NT$700 起</span>
+                        <span class="s-time"><i class="fa-regular fa-clock"></i> 約 75 分</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="service-select-card" data-service="法式美甲" data-price="NT$650 起" data-duration="約 70 分">
+                    <i class="fa-solid fa-check check-badge"></i>
+                    <img class="service-select-img"
+                         src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=300&auto=format&fit=crop&sat=-40&q=70"
+                         alt="法式美甲" loading="lazy" />
+                    <div class="service-select-body">
+                      <p class="service-select-name">法式美甲</p>
+                      <p class="service-select-desc">精緻白邊，優雅百搭，永不退流行。</p>
+                      <div class="service-select-meta">
+                        <span class="s-price"><i class="fa-solid fa-tag"></i> NT$650 起</span>
+                        <span class="s-time"><i class="fa-regular fa-clock"></i> 約 70 分</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="service-select-card" data-service="造型設計" data-price="NT$900 起" data-duration="約 90 分">
+                    <i class="fa-solid fa-check check-badge"></i>
+                    <img class="service-select-img"
+                         src="https://images.unsplash.com/photo-1604902396830-aca29e19b067?w=300&auto=format&fit=crop&hue-rotate=20&q=70"
+                         alt="造型設計" loading="lazy" />
+                    <div class="service-select-body">
+                      <p class="service-select-name">造型設計</p>
+                      <p class="service-select-desc">手繪、3D、貓眼，量身打造專屬款式。</p>
+                      <div class="service-select-meta">
+                        <span class="s-price"><i class="fa-solid fa-tag"></i> NT$900 起</span>
+                        <span class="s-time"><i class="fa-regular fa-clock"></i> 約 90 分</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="service-select-card" data-service="卸甲服務" data-price="NT$300 起" data-duration="約 30 分">
+                    <i class="fa-solid fa-check check-badge"></i>
+                    <img class="service-select-img"
+                         src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=300&auto=format&fit=crop&q=70"
+                         alt="卸甲服務" loading="lazy" />
+                    <div class="service-select-body">
+                      <p class="service-select-name">卸甲服務</p>
+                      <p class="service-select-desc">溫和專業卸除，保護自然甲片健康。</p>
+                      <div class="service-select-meta">
+                        <span class="s-price"><i class="fa-solid fa-tag"></i> NT$300 起</span>
+                        <span class="s-time"><i class="fa-regular fa-clock"></i> 約 30 分</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="service-select-card" data-service="手部保養" data-price="NT$400 起" data-duration="約 45 分">
+                    <i class="fa-solid fa-check check-badge"></i>
+                    <img class="service-select-img"
+                         src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=300&auto=format&fit=crop&sat=20&q=70"
+                         alt="手部保養" loading="lazy" />
+                    <div class="service-select-body">
+                      <p class="service-select-name">手部保養</p>
+                      <p class="service-select-desc">去角質、手膜、精油按摩，恢復柔嫩。</p>
+                      <div class="service-select-meta">
+                        <span class="s-price"><i class="fa-solid fa-tag"></i> NT$400 起</span>
+                        <span class="s-time"><i class="fa-regular fa-clock"></i> 約 45 分</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="service-select-card" data-service="指甲修復" data-price="NT$200 起/指" data-duration="約 20 分">
+                    <i class="fa-solid fa-check check-badge"></i>
+                    <img class="service-select-img"
+                         src="https://images.unsplash.com/photo-1604902396830-aca29e19b067?w=300&auto=format&fit=crop&sat=-10&q=70"
+                         alt="指甲修復" loading="lazy" />
+                    <div class="service-select-body">
+                      <p class="service-select-name">指甲修復</p>
+                      <p class="service-select-desc">斷裂、脆弱指甲專業修補加固。</p>
+                      <div class="service-select-meta">
+                        <span class="s-price"><i class="fa-solid fa-tag"></i> NT$200 起/指</span>
+                        <span class="s-time"><i class="fa-regular fa-clock"></i> 約 20 分</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="service-select-card" data-service="灰指甲護理" data-price="NT$600 起" data-duration="約 60 分">
+                    <i class="fa-solid fa-check check-badge"></i>
+                    <img class="service-select-img"
+                         src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=300&auto=format&fit=crop&sat=-30&q=70"
+                         alt="灰指甲護理" loading="lazy" />
+                    <div class="service-select-body">
+                      <p class="service-select-name">灰指甲護理</p>
+                      <p class="service-select-desc">改善甲面色澤與厚度，專業護理輔助。</p>
+                      <div class="service-select-meta">
+                        <span class="s-price"><i class="fa-solid fa-tag"></i> NT$600 起</span>
+                        <span class="s-time"><i class="fa-regular fa-clock"></i> 約 60 分</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div><!-- /.services-select-grid -->
+
+
+                <!-- ── 日期與時段 ── -->
+                <p class="form-section-title">預約日期與時段</p>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="f-date">
+                      希望預約日期 <span>*</span>
+                    </label>
+                    <input type="date" id="f-date" name="date"
+                           class="form-input" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="f-time">
+                      希望預約時段 <span>*</span>
+                    </label>
+                    <!-- 【修改】時段選項可自行增減 -->
+                    <select id="f-time" name="time" class="form-select" required>
+                      <option value="" disabled selected>請選擇時段</option>
+                      <option value="10:00">10:00</option>
+                      <option value="10:30">10:30</option>
+                      <option value="11:00">11:00</option>
+                      <option value="11:30">11:30</option>
+                      <option value="12:00">12:00</option>
+                      <option value="12:30">12:30</option>
+                      <option value="13:00">13:00</option>
+                      <option value="13:30">13:30</option>
+                      <option value="14:00">14:00</option>
+                      <option value="14:30">14:30</option>
+                      <option value="15:00">15:00</option>
+                      <option value="15:30">15:30</option>
+                      <option value="16:00">16:00</option>
+                      <option value="16:30">16:30</option>
+                      <option value="17:00">17:00</option>
+                      <option value="17:30">17:30</option>
+                      <option value="18:00">18:00</option>
+                      <option value="18:30">18:30</option>
+                      <option value="19:00">19:00</option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <!-- ── 備註 ── -->
+                <p class="form-section-title">備註說明</p>
+
+                <div class="form-group">
+                  <label class="form-label" for="f-note">備註</label>
+                  <textarea id="f-note" name="note" class="form-textarea"
+                    placeholder="可描述您的需求、偏好款式、或指定服務老師，後續將由客服與您確認"></textarea>
+                </div>
+
+
+                <!-- 送出按鈕 -->
+                <button type="submit" class="btn btn--primary form-submit-btn">
+                  <i class="fa-regular fa-paper-plane"></i> 送出預約申請
+                </button>
+
+              </form>
+            </div><!-- /.booking-form-wrap -->
+
+
+            <!-- 右側：預約摘要 -->
+            <aside class="booking-sidebar">
+              <div class="booking-summary">
+                <h3 class="summary-title">預約摘要</h3>
+
+                <div class="summary-row">
+                  <span class="summary-key">服務項目</span>
+                  <span class="summary-val" id="sum-service">尚未選擇</span>
+                </div>
+                <div class="summary-row">
+                  <span class="summary-key">價格區間</span>
+                  <span class="summary-val" id="sum-price">—</span>
+                </div>
+                <div class="summary-row">
+                  <span class="summary-key">所需時間</span>
+                  <span class="summary-val" id="sum-duration">—</span>
+                </div>
+                <div class="summary-row">
+                  <span class="summary-key">預約日期</span>
+                  <span class="summary-val" id="sum-date">尚未選擇</span>
+                </div>
+                <div class="summary-row">
+                  <span class="summary-key">預約時段</span>
+                  <span class="summary-val" id="sum-time">尚未選擇</span>
+                </div>
+
+                <div class="summary-note">
+                  <i class="fa-solid fa-circle-info" style="color:var(--color-primary);margin-right:6px"></i>
+                  送出後，客服將於 <strong>24 小時內</strong>透過 LINE 與您確認，並告知訂金繳交方式。
+                </div>
+              </div>
+            </aside>
+
+          </div><!-- /.booking-layout -->
+        </div>
+      </div>
+    </div>
+  </div><!-- /#tab-form -->
+
+
+  <!-- ========================================================
+       TAB 2：預約查詢
+       【串接標示】未來替換為後端查詢 API
+       ======================================================== -->
+  <div class="tab-panel" id="tab-query">
+    <div class="query-section">
+      <div class="container">
+        <div class="query-card">
+          <h2 class="query-title">預約查詢</h2>
+          <p class="query-desc">輸入您預約時留下的手機號碼，即可查詢預約狀態。</p>
+          <!-- 串接說明 -->
+          <div class="api-note">
+            ⚙️ <strong>【開發串接點】</strong>
+            送出後呼叫後端 API（如 Google Apps Script）以手機號碼查詢 Google Sheet 訂單資料，
+            將結果填入 <code>.query-result</code> 區塊。
+          </div>
+          <div class="form-group" style="margin-top:20px">
+            <label class="form-label" for="q-phone">手機號碼</label>
+            <input type="tel" id="q-phone" class="form-input" placeholder="09XX-XXX-XXX" />
+          </div>
+          <button class="btn btn--primary" style="width:100%" id="query-btn">
+            <i class="fa-solid fa-magnifying-glass"></i> 查詢預約
+          </button>
+
+          <!-- 假資料查詢結果 -->
+          <div class="query-result" id="query-result">
+            <p class="query-result-title">查詢結果</p>
+            <div class="query-result-row">
+              <span class="query-result-key">姓名</span>
+              <span class="query-result-val" id="qr-name">—</span>
+            </div>
+            <div class="query-result-row">
+              <span class="query-result-key">服務項目</span>
+              <span class="query-result-val" id="qr-service">—</span>
+            </div>
+            <div class="query-result-row">
+              <span class="query-result-key">預約日期</span>
+              <span class="query-result-val" id="qr-date">—</span>
+            </div>
+            <div class="query-result-row">
+              <span class="query-result-key">時段</span>
+              <span class="query-result-val" id="qr-time">—</span>
+            </div>
+            <div class="query-result-row">
+              <span class="query-result-key">狀態</span>
+              <span class="query-result-val"><span class="status-badge status-badge--pending" id="qr-status">待確認</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /#tab-query -->
+
+
+  <!-- ========================================================
+       TAB 3：查看可預約時間
+       【串接標示】靜態假資料 UI，未來串接 Google Calendar API
+       ======================================================== -->
+  <div class="tab-panel" id="tab-availability">
+    <div class="availability-section">
+      <div class="container">
+        <div class="api-note" style="max-width:700px;margin:0 auto 24px">
+          ⚙️ <strong>【開發串接點】</strong>
+          以下為靜態假資料示意，未來串接 Google Calendar API 後，
+          將動態讀取實際可預約時間顯示於此。
+        </div>
+
+        <div class="calendar-wrap">
+          <!-- 月份導覽 -->
+          <div class="calendar-header">
+            <h3 class="calendar-title" id="cal-month-label">2026 年 6 月</h3>
+            <div class="calendar-nav">
+              <button id="cal-prev" aria-label="上個月"><i class="fa-solid fa-chevron-left"></i></button>
+              <button id="cal-next" aria-label="下個月"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+
+          <!-- 星期標題 -->
+          <div class="calendar-grid" id="cal-grid">
+            <div class="calendar-day-label">日</div>
+            <div class="calendar-day-label">一</div>
+            <div class="calendar-day-label">二</div>
+            <div class="calendar-day-label">三</div>
+            <div class="calendar-day-label">四</div>
+            <div class="calendar-day-label">五</div>
+            <div class="calendar-day-label">六</div>
+            <!-- 日期由 JS 動態生成 -->
+          </div>
+
+          <!-- 圖例 -->
+          <div class="calendar-legend">
+            <div class="legend-item">
+              <div class="legend-dot legend-dot--avail"></div>
+              <span>尚有空位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot legend-dot--full"></div>
+              <span>已額滿</span>
+            </div>
+          </div>
+
+          <!-- 時段列表（點選日期後顯示） -->
+          <div class="time-slots-wrap" id="time-slots-wrap" style="display:none">
+            <p class="time-slots-title" id="time-slots-title">請選擇日期查看時段</p>
+            <div class="time-slots" id="time-slots-grid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /#tab-availability -->
+
+
+  <!-- ========================================================
+       MODAL：離開確認
+       觸發位置：點擊 Header Logo 返回首頁時
+       【修改區域】顏色在 booking.css 的 #exit-modal 區塊調整
+       ======================================================== -->
+  <div class="modal-overlay" id="exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title">
+    <div class="modal-box">
+      <div class="modal-icon">⚠️</div>
+      <h2 class="modal-title" id="exit-modal-title">確認離開？</h2>
+      <p class="modal-desc">
+        您目前有尚未送出的預約訂單，<br/>
+        確認離開後填寫的資料將不會保留。
+      </p>
+      <div class="modal-actions">
+        <!-- 取消：留在預約頁 -->
+        <button class="btn btn--cancel" id="modal-stay">
+          繼續填寫
+        </button>
+        <!-- 確認離開：前往首頁 -->
+        <button class="btn--confirm-exit" id="modal-leave">
+          確認離開
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- JavaScript -->
+  <script src="js/booking.js"></script>
+
+</body>
+</html>
